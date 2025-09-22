@@ -106,6 +106,45 @@ func (t *Tree) height(node *Node) int {
 	return right + 1
 }
 
+func (t *Tree) equality(tree *Tree) bool {
+	return t.equalitys(t.root, tree.root)
+}
+
+func (t *Tree) equalitys(first, second *Node) bool {
+	if first == nil && second == nil {
+		return true
+	}
+
+	if first != nil && second != nil {
+		return first.value == second.value && t.equalitys(first.left, second.left) && t.equalitys(first.right, second.right)
+	}
+
+	return false
+}
+
+func (t *Tree) validateBST(node *Node) bool {
+	var helper func(node *Node, min, max *int) bool
+
+	helper = func(node *Node, min, max *int) bool {
+
+		if node == nil {
+			return true
+		}
+
+		if min != nil && node.value < *min {
+			return false
+		}
+
+		if max != nil && node.value > *max {
+			return false
+		}
+
+		return helper(node.left, min, &node.value) && helper(node.right, &node.value, max)
+	}
+
+	return helper(node, nil, nil)
+}
+
 func main() {
 	fmt.Println("Binary Tree")
 
@@ -120,6 +159,16 @@ func main() {
 	tree.insert(6)
 	tree.insert(8)
 	tree.insert(10)
+
+	tree2 := &Tree{}
+
+	tree2.insert(7)
+	tree2.insert(4)
+	tree2.insert(9)
+	tree2.insert(1)
+	tree2.insert(6)
+	tree2.insert(8)
+	tree2.insert(10)
 
 	fmt.Println("Find")
 
@@ -139,4 +188,10 @@ func main() {
 
 	fmt.Println("Height")
 	fmt.Println(tree.height(tree.root))
+
+	fmt.Println("Equality")
+	fmt.Println(tree.equality(tree2))
+
+	fmt.Println("Valid BST")
+	fmt.Println(tree.validateBST(tree.root))
 }
