@@ -145,6 +145,41 @@ func (t *Tree) validateBST(node *Node) bool {
 	return helper(node, nil, nil)
 }
 
+func (t *Tree) nodeAtK(node *Node, distance int) []int {
+	var nodes []int
+
+	if node == nil {
+		return nodes
+	}
+
+	if distance == 0 {
+		nodes = append(nodes, node.value)
+		return nodes
+	}
+
+	if node.left == nil && node.right == nil {
+		return nodes
+	}
+
+	left := t.nodeAtK(node.left, distance-1)
+	right := t.nodeAtK(node.right, distance-1)
+
+	nodes = append(nodes, left...)
+	nodes = append(nodes, right...)
+
+	return nodes
+}
+
+func (t *Tree) levelOrderTraversal() {
+	if t.root == nil {
+		return
+	}
+
+	for i := 0; i <= t.height(t.root); i++ {
+		fmt.Println(t.nodeAtK(t.root, i))
+	}
+}
+
 func main() {
 	fmt.Println("Binary Tree")
 
@@ -170,6 +205,9 @@ func main() {
 	tree2.insert(8)
 	tree2.insert(10)
 
+	fmt.Println("Node at K")
+	fmt.Println(tree.nodeAtK(tree.root, 2))
+
 	fmt.Println("Find")
 
 	fmt.Println(tree.find(5))
@@ -194,4 +232,7 @@ func main() {
 
 	fmt.Println("Valid BST")
 	fmt.Println(tree.validateBST(tree.root))
+
+	fmt.Println("Level Order Traversal")
+	tree.levelOrderTraversal()
 }
