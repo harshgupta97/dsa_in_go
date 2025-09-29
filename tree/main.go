@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"tree/avl"
+)
 
 type Node struct {
 	value int
@@ -235,4 +238,7 @@ func main() {
 
 	fmt.Println("Level Order Traversal")
 	tree.levelOrderTraversal()
+
+	fmt.Print("AVL")
+	avl.Init()
 }
